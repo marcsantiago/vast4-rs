@@ -10,7 +10,7 @@
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "CompanionAds", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "CompanionAds")]
 pub struct CompanionAds<'a> {
     /// How the player should treat a companion ad when multiple are supplied.
     #[xml(attr = "required", default)]
@@ -101,7 +101,7 @@ impl std::fmt::Display for CompanionRequirement {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Companion", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Companion")]
 pub struct Companion<'a> {
     /// An optional identifier for the creative.
     #[xml(attr = "id", default)]
@@ -234,7 +234,7 @@ impl std::fmt::Display for RenderingMode {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "CompanionClickTracking", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "CompanionClickTracking")]
 pub struct CompanionClickTracking<'a> {
     /// An id provided by the ad server to track the click in reports.
     #[xml(attr = "id")]

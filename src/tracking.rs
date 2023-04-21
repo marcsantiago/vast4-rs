@@ -10,7 +10,7 @@
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "TrackingEvents", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "TrackingEvents")]
 pub struct TrackingEvents<'a> {
     /// The container for zero or more [`<Tracking>`](Tracking) elements.
     #[xml(child = "Tracking", default)]
@@ -33,7 +33,7 @@ pub struct TrackingEvents<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, PartialEq, Clone, Debug)]
-#[xml(tag = "Tracking", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Tracking")]
 pub struct Tracking<'a> {
     /// A string that defines the event being tracked. Accepted values are listed in section
     /// 3.14.1 and differ for [`<Linear>`](crate::Linear), [`<NonLinear>`](crate::NonLinear), and

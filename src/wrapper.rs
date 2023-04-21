@@ -26,7 +26,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Wrapper", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Wrapper")]
 pub struct Wrapper<'a> {
     /// A Boolean value that identifies whether subsequent Wrappers after a
     /// requested VAST response is allowed. If false, any Wrappers received (i.e. not
@@ -97,7 +97,7 @@ pub struct Wrapper<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "BlockedAdCategories", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "BlockedAdCategories")]
 pub struct BlockedAdCategories<'a> {
     /// A URL for the organizational authority that produced the list being used to identify
     /// ad content.

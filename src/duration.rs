@@ -128,7 +128,7 @@ crate::declare_test!(
 
 #[cfg(test)]
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, PartialEq, Debug)]
-#[xml(tag = "Xml", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Xml")]
 struct Xml {
     #[xml(child = "Duration", default)]
     dur: Duration,

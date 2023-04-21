@@ -15,7 +15,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "MediaFiles", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "MediaFiles")]
 pub struct MediaFiles<'a> {
     /// The container for zero or one [`<ClosedCaptionFiles>`](ClosedCaptionFiles) element.
     #[xml(child = "ClosedCaptionFiles", default)]
@@ -60,7 +60,7 @@ pub struct MediaFiles<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "MediaFile", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "MediaFile")]
 pub struct MediaFile<'a> {
     /// An identifier for the media file.
     #[xml(attr = "id", default)]
@@ -195,7 +195,7 @@ impl std::fmt::Display for DeliveryProtocol {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Mezzanine", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Mezzanine")]
 pub struct Mezzanine<'a> {
     /// An identifier for the media file.
     #[xml(attr = "id", default)]
@@ -251,7 +251,7 @@ pub struct Mezzanine<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "InteractiveCreativeFile", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "InteractiveCreativeFile")]
 pub struct InteractiveCreativeFile<'a> {
     /// Identifies the MIME type of the file provided.
     #[xml(attr = "type", default)]
@@ -283,7 +283,7 @@ pub struct InteractiveCreativeFile<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "ClosedCaptionFiles", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "ClosedCaptionFiles")]
 pub struct ClosedCaptionFiles<'a> {
     /// The container for zero or more [`<ClosedCaptionFile>`](ClosedCaptionFile) element.
     #[xml(child = "ClosedCaptionFile")]
@@ -305,7 +305,7 @@ pub struct ClosedCaptionFiles<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "ClosedCaptionFile", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "ClosedCaptionFile")]
 pub struct ClosedCaptionFile<'a> {
     /// Identifies the MIME type of the file provided.
     #[xml(attr = "type", default)]

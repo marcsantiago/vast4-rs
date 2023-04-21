@@ -11,7 +11,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Extensions", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Extensions")]
 pub struct Extensions {
     /// The container for zero or more [`<Extension>`](Extension) elements.
     #[xml(child = "Extension", default)]

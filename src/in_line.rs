@@ -26,7 +26,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "InLine", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "InLine")]
 pub struct InLine<'a> {
     /// The [`<AdSystem>`](AdSystem) element.
     #[xml(child = "AdSystem")]
@@ -94,7 +94,7 @@ pub struct InLine<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "AdSystem", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "AdSystem")]
 pub struct AdSystem<'a> {
     /// Internal version used by ad system.
     #[xml(attr = "version", default)]
@@ -118,7 +118,7 @@ pub struct AdSystem<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Impression", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Impression")]
 pub struct Impression<'a> {
     /// Ad server ID for the impression.
     #[xml(attr = "id", default)]
@@ -148,7 +148,7 @@ pub struct Impression<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Category", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Category")]
 pub struct Category<'a> {
     /// A URL for the organizational authority that produced the list being used to identify
     /// ad content category.
@@ -178,7 +178,7 @@ pub struct Category<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Pricing", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Pricing")]
 pub struct Pricing<'a> {
     /// Identifies the pricing model as one of: CPM, CPC, CPE, or CPV.
     #[xml(attr = "model")]
@@ -267,7 +267,7 @@ impl std::fmt::Display for PriceModel {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Survey", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Survey")]
 pub struct Survey<'a> {
     /// The MIME type of the resource being served.
     #[xml(attr = "type", default)]

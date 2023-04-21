@@ -10,7 +10,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Icons", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Icons")]
 pub struct Icons<'a> {
     /// The container for one or more [`<Icon>`](Icon) elements.
     #[xml(child = "Icon")]
@@ -45,7 +45,7 @@ pub struct Icons<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Icon", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Icon")]
 pub struct Icon<'a> {
     /// The program represented in the icon (e.g. "AdChoices").
     #[xml(attr = "program", default)]
@@ -190,7 +190,7 @@ impl std::fmt::Display for YPosition {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "IconClicks", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "IconClicks")]
 pub struct IconClicks<'a> {
     /// The container for zero or one [`<IconClickFallbackImages>`](IconClickFallbackImages)
     /// element.
@@ -216,7 +216,7 @@ pub struct IconClicks<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "IconClickTracking", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "IconClickTracking")]
 pub struct IconClickTracking<'a> {
     /// An id for the click to be measured.
     #[xml(attr = "id", default)]
@@ -241,7 +241,7 @@ pub struct IconClickTracking<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "IconClickFallbackImages", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "IconClickFallbackImages")]
 pub struct IconClickFallbackImages<'a> {
     /// The container for one or more [`<IconClickFallbackImage>`](IconClickFallbackImage) element.
     #[xml(child = "IconClickFallbackImage")]
@@ -264,7 +264,7 @@ pub struct IconClickFallbackImages<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "IconClickFallbackImage", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "IconClickFallbackImage")]
 pub struct IconClickFallbackImage<'a> {
     /// Pixel height of the image asset.
     #[xml(attr = "height", default)]

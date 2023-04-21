@@ -12,7 +12,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "VAST", strict(unknown_element))]
+#[xml(tag = "VAST")]
 pub struct Vast<'a> {
     /// A float (number with decimal) to indicate the VAST version being used.
     #[xml(attr = "version")]

@@ -16,7 +16,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Ad", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Ad")]
 pub struct Ad<'a> {
     /// An ad server-defined identifier string for the ad.
     #[xml(attr = "id", default)]
