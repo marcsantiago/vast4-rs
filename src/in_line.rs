@@ -52,10 +52,10 @@ pub struct InLine<'a> {
     /// This should be inserted into the `<AdServingId>` element, and also be included on all
     /// outgoing tracking pixels. The value should be different for each Inline in a VAST. Usage of
     /// a GUID is recommended.
-    #[xml(flatten_text = "AdServingId")]
+    #[xml(flatten_text = "AdServingId", default)]
     pub ad_serving_id: std::borrow::Cow<'a, str>,
     /// Common name of ad
-    #[xml(flatten_text = "AdTitle")]
+    #[xml(flatten_text = "AdTitle", default)]
     pub ad_title: std::borrow::Cow<'a, str>,
     /// The container for zero or one [`<AdVerifications>`](crate::AdVerifications) element.
     #[xml(child = "AdVerifications", default)]
