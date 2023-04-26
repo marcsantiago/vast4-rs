@@ -162,7 +162,7 @@ pub enum TrackingEvent {
     Collapse,
     #[deprecated(since = "VAST 4.0")]
     /// The user activated a control to extend the video player to the edges of the viewer’s
-    // screen. 
+    // screen.
     FullScreen,
     #[deprecated(since = "VAST 4.0")]
     /// The user activated the control to reduce video player size to original dimensions.
@@ -171,21 +171,7 @@ pub enum TrackingEvent {
     /// The user activated a control to expand the creative.
     Expand,
     // Catch All
-    Unknown(UnknownEvent)
-}
-
-#[derive(PartialEq, Debug)]
-pub struct  UnknownEvent {
-    body: String
-}
-
-
-impl Clone for UnknownEvent {
-    fn clone(&self) -> UnknownEvent {
-        UnknownEvent {
-            body: self.body.clone()
-        }
-    }
+    Unknown(crate::UnknownEvent),
 }
 
 impl std::str::FromStr for TrackingEvent {
@@ -222,13 +208,12 @@ impl std::str::FromStr for TrackingEvent {
             "fullscreen" => Self::FullScreen,
             "exitFullscreen" => Self::ExitFullscreen,
             "expand" => Self::Expand,
-            _ => Self::Unknown(UnknownEvent{body: s.to_string()}),
+            _ => Self::Unknown(crate::UnknownEvent {
+                body: s.to_string(),
+            }),
         })
     }
 }
-
-
-
 
 impl std::fmt::Display for TrackingEvent {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -262,7 +247,7 @@ impl std::fmt::Display for TrackingEvent {
             Self::FullScreen => write!(f, "fullscreen"),
             Self::ExitFullscreen => write!(f, "exitFullscreen"),
             Self::Expand => write!(f, "expand"),
-            Self::Unknown(b) =>write!(f, "{}", b.body),
+            Self::Unknown(b) => write!(f, "{}", b.body),
         }
     }
 }

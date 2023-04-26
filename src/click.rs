@@ -15,7 +15,7 @@
 #[xml(tag = "VideoClicks")]
 pub struct VideoClicks<'a> {
     /// The container for zero or more [`<ClickTracking>`](ClickTracking) elements.
-    #[xml(child = "ClickTracking")]
+    #[xml(child = "ClickTracking", default)]
     pub click_trackings: Vec<ClickTracking<'a>>,
     /// The container for zero or one [`<ClickThrough>`](ClickThrough) element.
     #[xml(child = "ClickThrough", default)]
@@ -43,11 +43,11 @@ pub struct VideoClicks<'a> {
 #[xml(tag = "ClickThrough")]
 pub struct ClickThrough<'a> {
     /// A unique ID for the clickthrough.
-    #[xml(attr = "id")]
+    #[xml(attr = "id", default)]
     pub id: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI to the advertiser’s site that the media player opens when a viewer clicks the ad.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -73,7 +73,7 @@ pub struct ClickTracking<'a> {
     pub id: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI for tracking when the [ClickThrough] is triggered.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -99,6 +99,6 @@ pub struct CustomClick<'a> {
     pub id: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI for tracking custom interactions.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }

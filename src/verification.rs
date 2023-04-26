@@ -81,7 +81,7 @@ pub struct JavaScriptResource<'a> {
     pub browser_optional: Option<bool>,
 
     /// A CDATA-wrapped URI to the JavaScript used to collect data.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -104,7 +104,7 @@ pub struct JavaScriptResource<'a> {
 #[xml(tag = "ExecutableResource")]
 pub struct ExecutableResource<'a> {
     /// The name of the API framework used to execute the AdVerification code.
-    #[xml(attr = "apiFramework")]
+    #[xml(attr = "apiFramework", default)]
     pub api_framework: std::borrow::Cow<'a, str>,
     /// The type of executable resource provided. The exact value used should be agreed
     /// upon by verification integrators and vendors who are implementing verification in
@@ -115,7 +115,7 @@ pub struct ExecutableResource<'a> {
     /// A CDATA-wrapped reference to the resource. This may be a URI, but
     /// depending on the execution environment can be any value which enables the
     /// player to load the required verification code.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -156,10 +156,10 @@ pub struct VerificationTrackingEvents<'a> {
 pub struct VerificationTracking<'a> {
     /// A string that defines the event being tracked. Accepted values are listed in section
     /// 3.17.3.
-    #[xml(attr = "event")]
+    #[xml(attr = "event", default)]
     pub event: std::borrow::Cow<'a, str>,
 
     /// A URI to the tracking resource for the event specified using the event attribute.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }

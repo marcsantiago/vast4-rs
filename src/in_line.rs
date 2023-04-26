@@ -97,11 +97,11 @@ pub struct InLine<'a> {
 #[xml(tag = "AdSystem")]
 pub struct AdSystem<'a> {
     /// Internal version used by ad system.
-    #[xml(attr = "version", default)]
+    #[xml(attr = "version")]
     pub version: Option<std::borrow::Cow<'a, str>>,
 
     /// A string that provides the name of the ad server that returned the ad.
-    #[xml(text)]
+    #[xml(text, default)]
     pub name: std::borrow::Cow<'a, str>,
 }
 
@@ -152,12 +152,12 @@ pub struct Impression<'a> {
 pub struct Category<'a> {
     /// A URL for the organizational authority that produced the list being used to identify
     /// ad content category.
-    #[xml(attr = "authority")]
+    #[xml(attr = "authority", default)]
     pub authority: std::borrow::Cow<'a, str>,
 
     /// A string that provides a category code or label that identifies the ad content
     /// category.
-    #[xml(text)]
+    #[xml(text, default)]
     pub code: std::borrow::Cow<'a, str>,
 }
 
@@ -186,11 +186,11 @@ pub struct Pricing<'a> {
     // TODO: typed value
     /// The three-letter ISO-4217 currency symbol that identifies the currency of the
     /// value provided (e.g. USD, GBP, etc.).
-    #[xml(attr = "currency")]
+    #[xml(attr = "currency", default)]
     pub currency: std::borrow::Cow<'a, str>,
 
     /// A number that represents a price that can be used in real-time bidding systems.
-    #[xml(text)]
+    #[xml(text, default)]
     pub price: f64,
 }
 
@@ -210,7 +210,7 @@ pub struct Pricing<'a> {
 ///   </xs:restriction>
 /// </xs:simpleType>
 /// ```
-#[derive(Default, PartialEq, Clone, Copy, Debug)]
+#[derive(Default, PartialEq, Clone, Debug)]
 pub enum PriceModel {
     /// CPM
     #[default]
@@ -221,6 +221,8 @@ pub enum PriceModel {
     Cpe,
     /// CPV
     Cpv,
+    // Catch All
+    Unknown(crate::UnknownEvent)
 }
 
 impl std::str::FromStr for PriceModel {
@@ -232,11 +234,7 @@ impl std::str::FromStr for PriceModel {
             "CPC" | "cpc" => Self::Cpc,
             "CPE" | "cpe" => Self::Cpe,
             "CPV" | "cpv" => Self::Cpv,
-            _ => {
-                return Err(crate::VastParseError::new(format!(
-                    "price model parsing error: '{s}'",
-                )));
-            }
+            _ => Self::Unknown(crate::UnknownEvent{body: s.to_string()}),
         })
     }
 }
@@ -248,6 +246,7 @@ impl std::fmt::Display for PriceModel {
             PriceModel::Cpc => write!(f, "cpc"),
             PriceModel::Cpe => write!(f, "cpe"),
             PriceModel::Cpv => write!(f, "cpv"),
+            PriceModel::Unknown(b) =>write!(f, "{}", b.body),
         }
     }
 }
@@ -274,6 +273,6 @@ pub struct Survey<'a> {
     pub mime_type: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI to any resource relating to an integrated survey.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }

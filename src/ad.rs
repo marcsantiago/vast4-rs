@@ -52,12 +52,14 @@ pub struct Ad<'a> {
 ///   </xs:restriction>
 /// </xs:simpleType>
 /// ```
-#[derive(Default, PartialEq, Clone, Copy, Debug)]
+#[derive(Default, PartialEq, Clone, Debug)]
 pub enum AdType {
     #[default]
     Video,
     Audio,
     Hybrid,
+    // Catch All
+    Unknown(crate::UnknownEvent),
 }
 
 impl std::str::FromStr for AdType {
@@ -68,7 +70,9 @@ impl std::str::FromStr for AdType {
             "video" => Self::Video,
             "audio" => Self::Audio,
             "hybrid" => Self::Hybrid,
-            _ => return Err(crate::VastParseError::new(format!("ad type parsing error: '{s}'"))),
+            _ => Self::Unknown(crate::UnknownEvent {
+                body: s.to_string(),
+            }),
         })
     }
 }
@@ -79,6 +83,7 @@ impl std::fmt::Display for AdType {
             AdType::Video => write!(f, "video"),
             AdType::Audio => write!(f, "audio"),
             AdType::Hybrid => write!(f, "hybrid"),
+            Self::Unknown(b) => write!(f, "{}", b.body),
         }
     }
 }

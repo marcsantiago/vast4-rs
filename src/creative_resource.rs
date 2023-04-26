@@ -16,7 +16,7 @@
 #[xml(tag = "StaticResource")]
 pub struct StaticResource<'a> {
     /// Identifies the MIME type of the creative provided.
-    #[xml(attr = "creativeType")]
+    #[xml(attr = "creativeType", default)]
     pub creative_type: std::borrow::Cow<'a, str>,
 
     /// A URI to the static creative file to be used for the ad component identified in the

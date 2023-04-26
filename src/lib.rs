@@ -21,6 +21,9 @@ pub fn from_str<'a, T: hard_xml::XmlRead<'a>>(s: &'a str) -> hard_xml::XmlResult
 mod duration;
 pub use duration::Duration;
 
+mod unknown;
+pub use unknown::UnknownEvent;
+
 mod error;
 pub use error::*;
 

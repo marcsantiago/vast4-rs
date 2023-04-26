@@ -96,6 +96,6 @@ pub struct AdParameters<'a> {
     pub xml_encoded: Option<bool>,
 
     /// Metadata for the ad.
-    #[xml(text)]
+    #[xml(text, default)]
     pub metadata: std::borrow::Cow<'a, str>,
 }

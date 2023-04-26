@@ -103,8 +103,16 @@ impl<'a> hard_xml::XmlRead<'a> for Extension {
 
         if let Some(t) = reader.next() {
             let t = t?;
-            if !matches!(t, Token::ElementEnd { end: ElementEnd::Open, .. }) {
-                return Err(hard_xml::XmlError::UnexpectedToken { token: format!("{t:?}") });
+            if !matches!(
+                t,
+                Token::ElementEnd {
+                    end: ElementEnd::Open,
+                    ..
+                }
+            ) {
+                return Err(hard_xml::XmlError::UnexpectedToken {
+                    token: format!("{t:?}"),
+                });
             }
         }
 

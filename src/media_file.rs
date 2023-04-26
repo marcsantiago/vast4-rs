@@ -21,7 +21,7 @@ pub struct MediaFiles<'a> {
     #[xml(child = "ClosedCaptionFiles", default)]
     pub closed_caption_files: Option<ClosedCaptionFiles<'a>>,
     /// The container for one or more [`<MediaFile>`](MediaFile) element.
-    #[xml(child = "MediaFile")]
+    #[xml(child = "MediaFile", default)]
     pub media_files: Vec<MediaFile<'a>>,
     /// The container for zero or more [`<Mezzanine>`](Mezzanine) elements.
     #[xml(child = "Mezzanine", default)]
@@ -67,18 +67,18 @@ pub struct MediaFile<'a> {
     pub id: Option<std::borrow::Cow<'a, str>>,
     /// Either “progressive” for progressive download protocols (such as HTTP) or
     /// “streaming” for streaming protocols.
-    #[xml(attr = "delivery")]
+    #[xml(attr = "delivery", default)]
     pub delivery: DeliveryProtocol,
     // TODO: typed value
     /// MIME type for the file container. Popular MIME types include, but are not
     /// limited to “video/mp4” for MP4, “audio/mpeg” and "audio/aac" for audio ads.
-    #[xml(attr = "type")]
+    #[xml(attr = "type", default)]
     pub mime_type: std::borrow::Cow<'a, str>,
     /// The native width of the video file, in pixels. (0 for audio ads)
-    #[xml(attr = "width")]
+    #[xml(attr = "width", default)]
     pub width: i32,
     /// The native height of the video file, in pixels. (0 for audio ads)
-    #[xml(attr = "height")]
+    #[xml(attr = "height", default)]
     pub height: i32,
     // TODO: typed value
     /// The codec used to encode the file which can take values as specified by
@@ -126,7 +126,7 @@ pub struct MediaFile<'a> {
     pub api_framework: Option<std::borrow::Cow<'a, str>>,
 
     /// A CDATA-wrapped URI to a media file.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -140,13 +140,15 @@ pub struct MediaFile<'a> {
 ///   </xs:restriction>
 /// </xs:simpleType>
 /// ```
-#[derive(Default, PartialEq, Clone, Copy, Debug)]
+#[derive(Default, PartialEq, Clone, Debug)]
 pub enum DeliveryProtocol {
     /// Progressive download protocols (such as HTTP).
     #[default]
     Progressive,
     /// Streaming protocols.
     Streaming,
+    // Catch All
+    Unknown(crate::UnknownEvent),
 }
 
 impl std::str::FromStr for DeliveryProtocol {
@@ -156,11 +158,9 @@ impl std::str::FromStr for DeliveryProtocol {
         Ok(match s {
             "progressive" => Self::Progressive,
             "streaming" => Self::Streaming,
-            _ => {
-                return Err(crate::VastParseError::new(format!(
-                    "delivery protocol parsing error: '{s}'"
-                )));
-            }
+            _ => Self::Unknown(crate::UnknownEvent {
+                body: s.to_string(),
+            }),
         })
     }
 }
@@ -170,6 +170,7 @@ impl std::fmt::Display for DeliveryProtocol {
         match self {
             Self::Progressive => write!(f, "progressive"),
             Self::Streaming => write!(f, "streaming"),
+            Self::Unknown(b) => write!(f, "{}", b.body),
         }
     }
 }
@@ -202,17 +203,17 @@ pub struct Mezzanine<'a> {
     pub id: Option<std::borrow::Cow<'a, str>>,
     /// Either “progressive” for progressive download protocols (such as HTTP) or
     /// “streaming” for streaming protocols.
-    #[xml(attr = "delivery")]
+    #[xml(attr = "delivery", default)]
     pub delivery: DeliveryProtocol,
     /// MIME type for the file container. Popular MIME types include, but are not
     /// limited to “video/mp4” for MP4, “audio/mpeg” and "audio/aac" for audio ads.
-    #[xml(attr = "type")]
+    #[xml(attr = "type", default)]
     pub mime_type: std::borrow::Cow<'a, str>,
     /// The native width of the video file, in pixels. (0 for audio ads)
-    #[xml(attr = "width")]
+    #[xml(attr = "width", default)]
     pub width: i32,
     /// The native height of the video file, in pixels. (0 for audio ads)
-    #[xml(attr = "height")]
+    #[xml(attr = "height", default)]
     pub height: i32,
     /// The codec used to encode the file which can take values as specified by
     /// [RFC 4281](http://tools.ietf.org/html/rfc4281).
@@ -230,7 +231,7 @@ pub struct Mezzanine<'a> {
     pub media_type: Option<std::borrow::Cow<'a, str>>,
 
     /// A CDATA-wrapped URI to a raw, high-quality media file.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -266,7 +267,7 @@ pub struct InteractiveCreativeFile<'a> {
     pub variable_duration: Option<bool>,
 
     /// A CDATA-wrapped URI to a file providing creative functions for the media file.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -318,6 +319,6 @@ pub struct ClosedCaptionFile<'a> {
     pub language: Option<std::borrow::Cow<'a, str>>,
 
     /// A CDATA-wrapped URI to a file providing Closed Caption info for the media file.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }

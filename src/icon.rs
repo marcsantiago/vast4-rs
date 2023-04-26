@@ -13,7 +13,7 @@
 #[xml(tag = "Icons")]
 pub struct Icons<'a> {
     /// The container for one or more [`<Icon>`](Icon) elements.
-    #[xml(child = "Icon")]
+    #[xml(child = "Icon", default)]
     pub icons: Vec<Icon<'a>>,
 }
 
@@ -71,8 +71,8 @@ pub struct Icon<'a> {
     pub duration: Option<crate::Duration>,
     /// The time of delay from when the associated linear creative begins playing to when
     /// the icon should be displayed.
-    #[xml(attr = "offset", default)]
-    pub offset: Option<crate::Duration>,
+    #[xml(attr = "offset", default = "00:00:00")]
+    pub offset: Option<crate::Offset>,
     /// Identifies the API needed to execute the icon resource file if applicable.
     #[xml(attr = "apiFramework", default)]
     pub api_framework: Option<std::borrow::Cow<'a, str>>,

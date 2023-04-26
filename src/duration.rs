@@ -58,9 +58,23 @@ impl std::str::FromStr for Duration {
             };
         }
 
-        let mut iter = s.trim().split(':');
+        // allow for the attribute to be present as an empty string
+        let s = s.trim();
+        if s.is_empty() {
+            return Ok(Duration::new(0, 0, 0, 0));
+        }
 
+        let mut iter = s.split(':');
         match (iter.next(), iter.next(), iter.next(), iter.next()) {
+            (Some(hh), None, None, None) => {
+                let hh = parse!(hh, u64)?;
+                Ok(Duration::new(hh, 0, 0, 0))
+            }
+            (Some(hh), Some(mm), None, None) => {
+                let hh = parse!(hh, u64)?;
+                let mm = parse!(mm, u64)?;
+                Ok(Duration::new(hh, mm, 0, 0))
+            }
             (Some(hh), Some(mm), Some(ss_ms), None) => {
                 let hh = parse!(hh, u64)?;
                 let mm = parse!(mm, u64)?;
@@ -69,7 +83,8 @@ impl std::str::FromStr for Duration {
                     None => Duration::new(hh, mm, parse!(ss_ms, u64)?, 0),
                 })
             }
-            _ => Err(error!()),
+            // fallthrough, if the duration cannot be parsed, then write an duration of 0
+            _ => Ok(Duration::new(0, 0, 0, 0)),
         }
     }
 }
@@ -113,8 +128,8 @@ fn test_duration_parse_and_format() {
 
     parse_and_format!("11:11:11.111", Duration::new(11, 11, 11, 111));
     parse_and_format!("12:34:56", Duration::new(12, 34, 56, 0));
-    assert!(Duration::from_str("").is_err());
-    assert!(Duration::from_str("12:34:56:78").is_err());
+    parse_and_format!("00:00:00", Duration::from_str("").unwrap());
+    parse_and_format!("00:00:00", Duration::from_str("12:34:56:78").unwrap());
 }
 
 crate::declare_test!(
@@ -138,12 +153,16 @@ crate::declare_test!(
     test_duration_property,
     Xml,
     "<Xml><Duration>12:34:56.999</Duration></Xml>",
-    Xml { dur: Duration::new(12, 34, 56, 999) }
+    Xml {
+        dur: Duration::new(12, 34, 56, 999)
+    }
 );
 
 crate::declare_test!(
     test_duration_property_empty,
     Xml,
     "<Xml></Xml>",
-    Xml { dur: Default::default() }
+    Xml {
+        dur: Default::default()
+    }
 );
