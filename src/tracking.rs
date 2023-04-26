@@ -78,6 +78,7 @@ pub struct Tracking<'a> {
 ///     <xs:enumeration value="acceptInvitation" />
 ///     <xs:enumeration value="adExpand" />
 ///     <xs:enumeration value="adCollapse" />
+///     <xs:enumeration value="collapse" />
 ///     <xs:enumeration value="minimize" />
 ///     <xs:enumeration value="close" />
 ///     <xs:enumeration value="overlayViewDuration" />
@@ -86,7 +87,7 @@ pub struct Tracking<'a> {
 ///   </xs:restriction>
 /// </xs:simpleType>
 /// ```
-#[derive(PartialEq, Clone, Copy, Debug)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum TrackingEvent {
     /// The user activated the mute control and muted the creative.
     Mute,
@@ -142,6 +143,9 @@ pub enum TrackingEvent {
     AdExpand,
     /// The user activated a control to reduce the creative to its original dimensions.
     AdCollapse,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated a control to reduce the creative to its original dimensions.
+    Collapse,
     /// The user clicked or otherwise activated a control used to minimize the ad to a size smaller
     /// than a collapsed ad but without fully dispatching the ad from the player environment.
     Minimize,
@@ -156,6 +160,22 @@ pub enum TrackingEvent {
     OtherAdInteraction,
     /// With VAST 4, video playback and interactive creative playback now happens in parallel.
     InteractiveStart,
+    // Catch All
+    Unknown(UnknownEvent)
+}
+
+#[derive(PartialEq, Debug)]
+pub struct  UnknownEvent {
+    body: String
+}
+
+
+impl Clone for UnknownEvent {
+    fn clone(&self) -> UnknownEvent {
+        UnknownEvent {
+            body: self.body.clone()
+        }
+    }
 }
 
 impl std::str::FromStr for TrackingEvent {
@@ -183,19 +203,19 @@ impl std::str::FromStr for TrackingEvent {
             "acceptInvitation" => Self::AcceptInvitation,
             "adExpand" => Self::AdExpand,
             "adCollapse" => Self::AdCollapse,
+            "collapse" => Self::Collapse,
             "minimize" => Self::Minimize,
             "close" => Self::Close,
             "overlayViewDuration" => Self::OverlayViewDuration,
             "otherAdInteraction" => Self::OtherAdInteraction,
             "interactiveStart" => Self::InteractiveStart,
-            _ => {
-                return Err(crate::VastParseError::new(format!(
-                    "tracking event parsing error: '{s}'",
-                )));
-            }
+            _ => Self::Unknown(UnknownEvent{body: s.to_string()}),
         })
     }
 }
+
+
+
 
 impl std::fmt::Display for TrackingEvent {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -220,11 +240,13 @@ impl std::fmt::Display for TrackingEvent {
             Self::AcceptInvitation => write!(f, "acceptInvitation"),
             Self::AdExpand => write!(f, "adExpand"),
             Self::AdCollapse => write!(f, "adCollapse"),
+            Self::Collapse => write!(f, "collapse"),
             Self::Minimize => write!(f, "minimize"),
             Self::Close => write!(f, "close"),
             Self::OverlayViewDuration => write!(f, "overlayViewDuration"),
             Self::OtherAdInteraction => write!(f, "otherAdInteraction"),
             Self::InteractiveStart => write!(f, "interactiveStart"),
+            Self::Unknown(b) =>write!(f, "{}", b.body),
         }
     }
 }
