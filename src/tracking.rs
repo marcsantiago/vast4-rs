@@ -143,9 +143,6 @@ pub enum TrackingEvent {
     AdExpand,
     /// The user activated a control to reduce the creative to its original dimensions.
     AdCollapse,
-    #[deprecated(since = "VAST 4.0")]
-    /// The user activated a control to reduce the creative to its original dimensions.
-    Collapse,
     /// The user clicked or otherwise activated a control used to minimize the ad to a size smaller
     /// than a collapsed ad but without fully dispatching the ad from the player environment.
     Minimize,
@@ -160,6 +157,19 @@ pub enum TrackingEvent {
     OtherAdInteraction,
     /// With VAST 4, video playback and interactive creative playback now happens in parallel.
     InteractiveStart,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated a control to reduce the creative to its original dimensions.
+    Collapse,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated a control to extend the video player to the edges of the viewer’s
+    // screen. 
+    FullScreen,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated the control to reduce video player size to original dimensions.
+    ExitFullscreen,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated a control to expand the creative.
+    Expand,
     // Catch All
     Unknown(UnknownEvent)
 }
@@ -203,12 +213,15 @@ impl std::str::FromStr for TrackingEvent {
             "acceptInvitation" => Self::AcceptInvitation,
             "adExpand" => Self::AdExpand,
             "adCollapse" => Self::AdCollapse,
-            "collapse" => Self::Collapse,
             "minimize" => Self::Minimize,
             "close" => Self::Close,
             "overlayViewDuration" => Self::OverlayViewDuration,
             "otherAdInteraction" => Self::OtherAdInteraction,
             "interactiveStart" => Self::InteractiveStart,
+            "collapse" => Self::Collapse,
+            "fullscreen" => Self::FullScreen,
+            "exitFullscreen" => Self::ExitFullscreen,
+            "expand" => Self::Expand,
             _ => Self::Unknown(UnknownEvent{body: s.to_string()}),
         })
     }
@@ -240,12 +253,15 @@ impl std::fmt::Display for TrackingEvent {
             Self::AcceptInvitation => write!(f, "acceptInvitation"),
             Self::AdExpand => write!(f, "adExpand"),
             Self::AdCollapse => write!(f, "adCollapse"),
-            Self::Collapse => write!(f, "collapse"),
             Self::Minimize => write!(f, "minimize"),
             Self::Close => write!(f, "close"),
             Self::OverlayViewDuration => write!(f, "overlayViewDuration"),
             Self::OtherAdInteraction => write!(f, "otherAdInteraction"),
             Self::InteractiveStart => write!(f, "interactiveStart"),
+            Self::Collapse => write!(f, "collapse"),
+            Self::FullScreen => write!(f, "fullscreen"),
+            Self::ExitFullscreen => write!(f, "exitFullscreen"),
+            Self::Expand => write!(f, "expand"),
             Self::Unknown(b) =>write!(f, "{}", b.body),
         }
     }
