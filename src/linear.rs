@@ -42,7 +42,7 @@
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Linear", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Linear")]
 pub struct Linear<'a> {
     /// The time at which the ad becomes skippable, if absent, the ad is not skippable.
     #[xml(attr = "skipoffset", default)]
@@ -89,13 +89,13 @@ pub struct Linear<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "AdParameters", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "AdParameters")]
 pub struct AdParameters<'a> {
     /// Identifies whether the ad parameters are xml-encoded.
     #[xml(attr = "xmlEncoded", default)]
     pub xml_encoded: Option<bool>,
 
     /// Metadata for the ad.
-    #[xml(text)]
+    #[xml(text, default)]
     pub metadata: std::borrow::Cow<'a, str>,
 }

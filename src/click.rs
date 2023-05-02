@@ -12,10 +12,10 @@
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "VideoClicks", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "VideoClicks")]
 pub struct VideoClicks<'a> {
     /// The container for zero or more [`<ClickTracking>`](ClickTracking) elements.
-    #[xml(child = "ClickTracking")]
+    #[xml(child = "ClickTracking", default)]
     pub click_trackings: Vec<ClickTracking<'a>>,
     /// The container for zero or one [`<ClickThrough>`](ClickThrough) element.
     #[xml(child = "ClickThrough", default)]
@@ -40,14 +40,14 @@ pub struct VideoClicks<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "ClickThrough", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "ClickThrough")]
 pub struct ClickThrough<'a> {
     /// A unique ID for the clickthrough.
-    #[xml(attr = "id")]
+    #[xml(attr = "id", default)]
     pub id: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI to the advertiser’s site that the media player opens when a viewer clicks the ad.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -66,14 +66,14 @@ pub struct ClickThrough<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "ClickTracking", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "ClickTracking")]
 pub struct ClickTracking<'a> {
     /// A unique ID for the click to be tracked.
     #[xml(attr = "id", default)]
     pub id: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI for tracking when the [ClickThrough] is triggered.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -92,13 +92,13 @@ pub struct ClickTracking<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "CustomClick", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "CustomClick")]
 pub struct CustomClick<'a> {
     /// A unique ID for the custom click to be tracked.
     #[xml(attr = "id", default)]
     pub id: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI for tracking custom interactions.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }

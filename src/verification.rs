@@ -9,7 +9,7 @@
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "AdVerifications", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "AdVerifications")]
 pub struct AdVerifications<'a> {
     /// The container for zero or more [`<Verification>`](Verification) elements.
     #[xml(child = "Verification", default)]
@@ -31,7 +31,7 @@ pub struct AdVerifications<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Verification", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Verification")]
 pub struct Verification<'a> {
     // https://github.com/InteractiveAdvertisingBureau/vast/blob/f28dbb4768744062fcb638a1859364cdafb3a449/vast_4.2.xsd#L1136
     /// An identifier for the verification vendor. The recommended format is `[domain]-[useCase]`,
@@ -68,7 +68,7 @@ pub struct Verification<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "JavaScriptResource", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "JavaScriptResource")]
 pub struct JavaScriptResource<'a> {
     // https://github.com/InteractiveAdvertisingBureau/vast/blob/f28dbb4768744062fcb638a1859364cdafb3a449/vast_4.2.xsd#L1123
     /// The name of the API framework used to execute the AdVerification code.
@@ -81,7 +81,7 @@ pub struct JavaScriptResource<'a> {
     pub browser_optional: Option<bool>,
 
     /// A CDATA-wrapped URI to the JavaScript used to collect data.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -101,10 +101,10 @@ pub struct JavaScriptResource<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "ExecutableResource", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "ExecutableResource")]
 pub struct ExecutableResource<'a> {
     /// The name of the API framework used to execute the AdVerification code.
-    #[xml(attr = "apiFramework")]
+    #[xml(attr = "apiFramework", default)]
     pub api_framework: std::borrow::Cow<'a, str>,
     /// The type of executable resource provided. The exact value used should be agreed
     /// upon by verification integrators and vendors who are implementing verification in
@@ -115,7 +115,7 @@ pub struct ExecutableResource<'a> {
     /// A CDATA-wrapped reference to the resource. This may be a URI, but
     /// depending on the execution environment can be any value which enables the
     /// player to load the required verification code.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }
 
@@ -130,7 +130,7 @@ pub struct ExecutableResource<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "TrackingEvents", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "TrackingEvents")]
 pub struct VerificationTrackingEvents<'a> {
     /// The container for zero or more [`<Tracking>`](VerificationTracking) elements.
     #[xml(child = "Tracking", default)]
@@ -152,14 +152,14 @@ pub struct VerificationTrackingEvents<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Tracking", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Tracking")]
 pub struct VerificationTracking<'a> {
     /// A string that defines the event being tracked. Accepted values are listed in section
     /// 3.17.3.
-    #[xml(attr = "event")]
+    #[xml(attr = "event", default)]
     pub event: std::borrow::Cow<'a, str>,
 
     /// A URI to the tracking resource for the event specified using the event attribute.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }

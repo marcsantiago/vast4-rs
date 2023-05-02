@@ -26,7 +26,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "InLine", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "InLine")]
 pub struct InLine<'a> {
     /// The [`<AdSystem>`](AdSystem) element.
     #[xml(child = "AdSystem")]
@@ -52,10 +52,10 @@ pub struct InLine<'a> {
     /// This should be inserted into the `<AdServingId>` element, and also be included on all
     /// outgoing tracking pixels. The value should be different for each Inline in a VAST. Usage of
     /// a GUID is recommended.
-    #[xml(flatten_text = "AdServingId")]
+    #[xml(flatten_text = "AdServingId", default)]
     pub ad_serving_id: std::borrow::Cow<'a, str>,
     /// Common name of ad
-    #[xml(flatten_text = "AdTitle")]
+    #[xml(flatten_text = "AdTitle", default)]
     pub ad_title: std::borrow::Cow<'a, str>,
     /// The container for zero or one [`<AdVerifications>`](crate::AdVerifications) element.
     #[xml(child = "AdVerifications", default)]
@@ -94,14 +94,14 @@ pub struct InLine<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "AdSystem", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "AdSystem")]
 pub struct AdSystem<'a> {
     /// Internal version used by ad system.
-    #[xml(attr = "version", default)]
+    #[xml(attr = "version")]
     pub version: Option<std::borrow::Cow<'a, str>>,
 
     /// A string that provides the name of the ad server that returned the ad.
-    #[xml(text)]
+    #[xml(text, default)]
     pub name: std::borrow::Cow<'a, str>,
 }
 
@@ -118,7 +118,7 @@ pub struct AdSystem<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Impression", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Impression")]
 pub struct Impression<'a> {
     /// Ad server ID for the impression.
     #[xml(attr = "id", default)]
@@ -148,16 +148,16 @@ pub struct Impression<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Category", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Category")]
 pub struct Category<'a> {
     /// A URL for the organizational authority that produced the list being used to identify
     /// ad content category.
-    #[xml(attr = "authority")]
+    #[xml(attr = "authority", default)]
     pub authority: std::borrow::Cow<'a, str>,
 
     /// A string that provides a category code or label that identifies the ad content
     /// category.
-    #[xml(text)]
+    #[xml(text, default)]
     pub code: std::borrow::Cow<'a, str>,
 }
 
@@ -178,7 +178,7 @@ pub struct Category<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Pricing", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Pricing")]
 pub struct Pricing<'a> {
     /// Identifies the pricing model as one of: CPM, CPC, CPE, or CPV.
     #[xml(attr = "model")]
@@ -186,11 +186,11 @@ pub struct Pricing<'a> {
     // TODO: typed value
     /// The three-letter ISO-4217 currency symbol that identifies the currency of the
     /// value provided (e.g. USD, GBP, etc.).
-    #[xml(attr = "currency")]
+    #[xml(attr = "currency", default)]
     pub currency: std::borrow::Cow<'a, str>,
 
     /// A number that represents a price that can be used in real-time bidding systems.
-    #[xml(text)]
+    #[xml(text, default)]
     pub price: f64,
 }
 
@@ -210,7 +210,7 @@ pub struct Pricing<'a> {
 ///   </xs:restriction>
 /// </xs:simpleType>
 /// ```
-#[derive(Default, PartialEq, Clone, Copy, Debug)]
+#[derive(Default, PartialEq, Clone, Debug)]
 pub enum PriceModel {
     /// CPM
     #[default]
@@ -221,6 +221,8 @@ pub enum PriceModel {
     Cpe,
     /// CPV
     Cpv,
+    // Catch All
+    Unknown(crate::UnknownEvent)
 }
 
 impl std::str::FromStr for PriceModel {
@@ -232,11 +234,7 @@ impl std::str::FromStr for PriceModel {
             "CPC" | "cpc" => Self::Cpc,
             "CPE" | "cpe" => Self::Cpe,
             "CPV" | "cpv" => Self::Cpv,
-            _ => {
-                return Err(crate::VastParseError::new(format!(
-                    "price model parsing error: '{s}'",
-                )));
-            }
+            _ => Self::Unknown(crate::UnknownEvent{body: s.to_string()}),
         })
     }
 }
@@ -248,6 +246,7 @@ impl std::fmt::Display for PriceModel {
             PriceModel::Cpc => write!(f, "cpc"),
             PriceModel::Cpe => write!(f, "cpe"),
             PriceModel::Cpv => write!(f, "cpv"),
+            PriceModel::Unknown(b) =>write!(f, "{}", b.body),
         }
     }
 }
@@ -267,13 +266,13 @@ impl std::fmt::Display for PriceModel {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Survey", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Survey")]
 pub struct Survey<'a> {
     /// The MIME type of the resource being served.
     #[xml(attr = "type", default)]
     pub mime_type: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI to any resource relating to an integrated survey.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }

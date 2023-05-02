@@ -11,7 +11,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Extensions", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Extensions")]
 pub struct Extensions {
     /// The container for zero or more [`<Extension>`](Extension) elements.
     #[xml(child = "Extension", default)]
@@ -103,8 +103,16 @@ impl<'a> hard_xml::XmlRead<'a> for Extension {
 
         if let Some(t) = reader.next() {
             let t = t?;
-            if !matches!(t, Token::ElementEnd { end: ElementEnd::Open, .. }) {
-                return Err(hard_xml::XmlError::UnexpectedToken { token: format!("{t:?}") });
+            if !matches!(
+                t,
+                Token::ElementEnd {
+                    end: ElementEnd::Open,
+                    ..
+                }
+            ) {
+                return Err(hard_xml::XmlError::UnexpectedToken {
+                    token: format!("{t:?}"),
+                });
             }
         }
 

@@ -26,7 +26,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Wrapper", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Wrapper")]
 pub struct Wrapper<'a> {
     /// A Boolean value that identifies whether subsequent Wrappers after a
     /// requested VAST response is allowed. If false, any Wrappers received (i.e. not
@@ -50,7 +50,7 @@ pub struct Wrapper<'a> {
     pub fallback_on_no_ad: Option<bool>,
 
     /// The [`<AdSystem>`](crate::AdSystem) element.
-    #[xml(child = "AdSystem")]
+    #[xml(child = "AdSystem", default)]
     pub ad_system: crate::AdSystem<'a>,
     /// The container for zero or more `<Error>` elements.
     #[xml(flatten_text = "Error", cdata, default)]
@@ -79,7 +79,7 @@ pub struct Wrapper<'a> {
     pub creatives: Option<crate::Creatives<'a>>,
     /// A URI to another VAST response that may be another VAST [Wrapper] or a VAST
     /// [InLine](crate::InLine) ad.
-    #[xml(flatten_text = "VASTAdTagURI")]
+    #[xml(flatten_text = "VASTAdTagURI", default)]
     pub vast_ad_tag_uri: std::borrow::Cow<'a, str>,
 }
 
@@ -97,7 +97,7 @@ pub struct Wrapper<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "BlockedAdCategories", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "BlockedAdCategories")]
 pub struct BlockedAdCategories<'a> {
     /// A URL for the organizational authority that produced the list being used to identify
     /// ad content.
@@ -106,6 +106,6 @@ pub struct BlockedAdCategories<'a> {
 
     /// A string that provides a comma separated list of category codes or labels per
     /// authority that identify the ad content.
-    #[xml(text)]
+    #[xml(text, default)]
     pub codes: std::borrow::Cow<'a, str>,
 }

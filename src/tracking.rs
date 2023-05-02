@@ -10,7 +10,7 @@
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "TrackingEvents", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "TrackingEvents")]
 pub struct TrackingEvents<'a> {
     /// The container for zero or more [`<Tracking>`](Tracking) elements.
     #[xml(child = "Tracking", default)]
@@ -33,7 +33,7 @@ pub struct TrackingEvents<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, PartialEq, Clone, Debug)]
-#[xml(tag = "Tracking", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Tracking")]
 pub struct Tracking<'a> {
     /// A string that defines the event being tracked. Accepted values are listed in section
     /// 3.14.1 and differ for [`<Linear>`](crate::Linear), [`<NonLinear>`](crate::NonLinear), and
@@ -78,6 +78,7 @@ pub struct Tracking<'a> {
 ///     <xs:enumeration value="acceptInvitation" />
 ///     <xs:enumeration value="adExpand" />
 ///     <xs:enumeration value="adCollapse" />
+///     <xs:enumeration value="collapse" />
 ///     <xs:enumeration value="minimize" />
 ///     <xs:enumeration value="close" />
 ///     <xs:enumeration value="overlayViewDuration" />
@@ -86,7 +87,7 @@ pub struct Tracking<'a> {
 ///   </xs:restriction>
 /// </xs:simpleType>
 /// ```
-#[derive(PartialEq, Clone, Copy, Debug)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum TrackingEvent {
     /// The user activated the mute control and muted the creative.
     Mute,
@@ -156,6 +157,21 @@ pub enum TrackingEvent {
     OtherAdInteraction,
     /// With VAST 4, video playback and interactive creative playback now happens in parallel.
     InteractiveStart,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated a control to reduce the creative to its original dimensions.
+    Collapse,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated a control to extend the video player to the edges of the viewer’s
+    // screen.
+    FullScreen,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated the control to reduce video player size to original dimensions.
+    ExitFullscreen,
+    #[deprecated(since = "VAST 4.0")]
+    /// The user activated a control to expand the creative.
+    Expand,
+    // Catch All
+    Unknown(crate::UnknownEvent),
 }
 
 impl std::str::FromStr for TrackingEvent {
@@ -188,11 +204,13 @@ impl std::str::FromStr for TrackingEvent {
             "overlayViewDuration" => Self::OverlayViewDuration,
             "otherAdInteraction" => Self::OtherAdInteraction,
             "interactiveStart" => Self::InteractiveStart,
-            _ => {
-                return Err(crate::VastParseError::new(format!(
-                    "tracking event parsing error: '{s}'",
-                )));
-            }
+            "collapse" => Self::Collapse,
+            "fullscreen" => Self::FullScreen,
+            "exitFullscreen" => Self::ExitFullscreen,
+            "expand" => Self::Expand,
+            _ => Self::Unknown(crate::UnknownEvent {
+                body: s.to_string(),
+            }),
         })
     }
 }
@@ -225,6 +243,11 @@ impl std::fmt::Display for TrackingEvent {
             Self::OverlayViewDuration => write!(f, "overlayViewDuration"),
             Self::OtherAdInteraction => write!(f, "otherAdInteraction"),
             Self::InteractiveStart => write!(f, "interactiveStart"),
+            Self::Collapse => write!(f, "collapse"),
+            Self::FullScreen => write!(f, "fullscreen"),
+            Self::ExitFullscreen => write!(f, "exitFullscreen"),
+            Self::Expand => write!(f, "expand"),
+            Self::Unknown(b) => write!(f, "{}", b.body),
         }
     }
 }

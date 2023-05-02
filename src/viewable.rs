@@ -13,11 +13,11 @@
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "ViewableImpression", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "ViewableImpression")]
 pub struct ViewableImpression<'a> {
     /// An ad server id for the impression. Impression resources of the same id should be requested
     /// at the same time or as close in time as possible to help prevent discrepancies.
-    #[xml(attr = "id")]
+    #[xml(attr = "id", default)]
     pub id: Option<std::borrow::Cow<'a, str>>,
 
     /// A URI that directs the video player to a tracking resource file that the video player

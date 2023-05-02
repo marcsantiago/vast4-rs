@@ -11,7 +11,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Creatives", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Creatives")]
 pub struct Creatives<'a> {
     /// The container for one or more [`<Creative>`](Creative) elements.
     #[xml(child = "Creative")]
@@ -57,7 +57,7 @@ pub struct Creatives<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Creative", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Creative")]
 pub struct Creative<'a> {
     /// A number representing the numerical order in which each sequenced creative within
     /// an ad should play.
@@ -110,7 +110,7 @@ pub struct Creative<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "UniversalAdId", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "UniversalAdId")]
 pub struct UniversalAdId<'a> {
     /// A string used to identify the URL for the registry website where the unique
     /// creative ID is cataloged. Default value is "unknown".
@@ -133,7 +133,7 @@ pub struct UniversalAdId<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "CreativeExtensions", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "CreativeExtensions")]
 pub struct CreativeExtensions {
     /// The container for zero or more [`<CreativeExtension>`](CreativeExtension) elements.
     #[xml(child = "CreativeExtension", default)]
@@ -215,8 +215,16 @@ impl<'a> hard_xml::XmlRead<'a> for CreativeExtension {
 
         if let Some(t) = reader.next() {
             let t = t?;
-            if !matches!(t, Token::ElementEnd { end: ElementEnd::Open, .. }) {
-                return Err(hard_xml::XmlError::UnexpectedToken { token: format!("{t:?}") });
+            if !matches!(
+                t,
+                Token::ElementEnd {
+                    end: ElementEnd::Open,
+                    ..
+                }
+            ) {
+                return Err(hard_xml::XmlError::UnexpectedToken {
+                    token: format!("{t:?}"),
+                });
             }
         }
 

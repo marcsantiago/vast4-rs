@@ -10,7 +10,7 @@
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "CompanionAds", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "CompanionAds")]
 pub struct CompanionAds<'a> {
     /// How the player should treat a companion ad when multiple are supplied.
     #[xml(attr = "required", default)]
@@ -101,16 +101,16 @@ impl std::fmt::Display for CompanionRequirement {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "Companion", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "Companion")]
 pub struct Companion<'a> {
     /// An optional identifier for the creative.
     #[xml(attr = "id", default)]
     pub id: Option<std::borrow::Cow<'a, str>>,
-    /// An optional identifier for the creative.
-    #[xml(attr = "width")]
+    /// The pixel width of the placement slot for which the creative is intended.
+    #[xml(attr = "width", default)]
     pub width: i32,
     /// The pixel height of the placement slot for which the creative is intended.
-    #[xml(attr = "height")]
+    #[xml(attr = "height", default)]
     pub height: i32,
     /// The pixel width of the creative.
     #[xml(attr = "assetWidth", default)]
@@ -234,13 +234,13 @@ impl std::fmt::Display for RenderingMode {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "CompanionClickTracking", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "CompanionClickTracking")]
 pub struct CompanionClickTracking<'a> {
     /// An id provided by the ad server to track the click in reports.
-    #[xml(attr = "id")]
+    #[xml(attr = "id", default)]
     pub id: std::borrow::Cow<'a, str>,
 
     /// A URI to a tracking resource file used to track a companion clickthrough.
-    #[xml(text, cdata)]
+    #[xml(text, cdata, default)]
     pub uri: std::borrow::Cow<'a, str>,
 }

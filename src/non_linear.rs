@@ -11,7 +11,7 @@
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "NonLinearAds", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "NonLinearAds")]
 pub struct NonLinearAds<'a> {
     /// The container for zero or one `<TrackingEvents>`(crate::TrackingEvents) element.
     #[xml(child = "TrackingEvents", default)]
@@ -59,7 +59,7 @@ pub struct NonLinearAds<'a> {
 /// </xs:complexType>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "NonLinear", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "NonLinear")]
 pub struct NonLinear<'a> {
     /// InLine: An optional identifier for the creative.
     /// Wrapper: No use this field.
@@ -144,7 +144,7 @@ pub struct NonLinear<'a> {
 /// </xs:element>
 /// ```
 #[derive(hard_xml::XmlWrite, hard_xml::XmlRead, Default, PartialEq, Clone, Debug)]
-#[xml(tag = "NonLinearClickTracking", strict(unknown_attribute, unknown_element))]
+#[xml(tag = "NonLinearClickTracking")]
 pub struct NonLinearClickTracking<'a> {
     /// An id provided by the ad server to track the click in reports.
     #[xml(attr = "id", default)]

@@ -1,8 +1,6 @@
 ## vast4
 
-[![ci](https://github.com/mechiru/vast4/workflows/ci/badge.svg)](https://github.com/mechiru/vast4/actions?query=workflow:ci)
-[![Rust Documentation](https://docs.rs/vast4/badge.svg)](https://docs.rs/vast4)
-[![Latest Version](https://img.shields.io/crates/v/vast4.svg)](https://crates.io/crates/vast4)
+[![ci](https://github.com/marcsantiago/vast4-rs/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/marcsantiago/vast4-rs/actions/workflows/ci.yml)
 
 An implementation of [VAST 4.2 FINAL](https://iabtechlab.com/wp-content/uploads/2019/06/VAST_4.2_final_june26.pdf).
 
