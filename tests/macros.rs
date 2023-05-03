@@ -5,19 +5,25 @@ macro_rules! __declare_test {
         fn read_and_write() {
             pub use std::borrow::Cow;
 
-            pub use vast4::*;
+            pub use vast4_rs::*;
 
             let xml = include_str!(concat!("../data/", $ver, "/", $name, ".xml"));
-            let vast = vast4::from_str::<vast4::Vast>(xml).unwrap();
+            let vast = vast4_rs::from_str::<vast4_rs::Vast>(xml).unwrap();
             pretty_assertions::assert_eq!($obj, vast);
-            let xml = vast4::to_string(&vast).unwrap();
+            let xml = vast4_rs::to_string(&vast).unwrap();
             std::fs::create_dir_all(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/output/", $ver))
                 .unwrap();
-            let file =
-                concat!(env!("CARGO_MANIFEST_DIR"), "/tests/output/", $ver, "/", $name, ".xml");
+            let file = concat!(
+                env!("CARGO_MANIFEST_DIR"),
+                "/tests/output/",
+                $ver,
+                "/",
+                $name,
+                ".xml"
+            );
             std::fs::write(file, xml).unwrap();
             let file = std::fs::read_to_string(file).unwrap();
-            let from_file = vast4::from_str::<vast4::Vast>(&file).unwrap();
+            let from_file = vast4_rs::from_str::<vast4_rs::Vast>(&file).unwrap();
             pretty_assertions::assert_eq!(vast, from_file);
         }
     };

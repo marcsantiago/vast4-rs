@@ -10,7 +10,7 @@ keywords = ["iab", "openrtb", "vast"]
 readme = "README.md"
 
 [dependencies]
-hard-xml = "1.21"
+hard-xml = "1.23.0"
 
 [dev-dependencies]
 pretty_assertions = "1.3"
