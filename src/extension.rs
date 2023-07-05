@@ -85,20 +85,12 @@ impl<'a> hard_xml::XmlRead<'a> for Extension {
 
         let mut mime_type = None;
         while let Some((name, value)) = reader.find_attribute()? {
-            match name {
-                "type" => {
-                    mime_type = Some(match value {
-                        std::borrow::Cow::Borrowed(s) => s.to_owned(),
-                        std::borrow::Cow::Owned(s) => s,
-                    })
-                }
-                _ => {
-                    return Err(hard_xml::XmlError::UnknownField {
-                        name: "Extension".into(),
-                        field: "type".into(),
-                    });
-                }
-            };
+            if name == "type" {
+                mime_type = Some(match value {
+                    std::borrow::Cow::Borrowed(s) => s.to_owned(),
+                    std::borrow::Cow::Owned(s) => s,
+                });
+            }
         }
 
         if let Some(t) = reader.next() {
@@ -160,7 +152,7 @@ impl<'a> hard_xml::XmlRead<'a> for Extension {
 
 #[cfg(test)]
 #[test]
-fn test_extension_attribute() {
+fn test_extension_attribute_flexible() {
     let xml = r#"<Extension type="application/xml" anyAttribute1="value1">
              <CreativeExtension type="text/javascript">
                  <![CDATA[
@@ -176,7 +168,7 @@ fn test_extension_attribute() {
                  <Extension>hoge</Extension>
              </CreativeExtension>
          </Extension>"#;
-    assert!(crate::from_str::<Extension>(xml).is_err());
+    assert!(crate::from_str::<Extension>(xml).is_ok());
 }
 
 crate::declare_test!(
