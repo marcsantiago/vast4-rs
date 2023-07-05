@@ -152,7 +152,7 @@ impl std::str::FromStr for YPosition {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
             "top" => Self::Top,
-            "buttom" => Self::Bottom,
+            "bottom" => Self::Bottom,
             _ => match s.parse::<i32>() {
                 Ok(y) => Self::Coordinate(y),
                 Err(_) => {
