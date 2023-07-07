@@ -114,15 +114,11 @@ impl std::str::FromStr for XPosition {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
-            "left" => Self::Left,
-            "right" => Self::Right,
+            "left" | "Left" => Self::Left,
+            "right" | "Right" => Self::Right,
             _ => match s.parse::<i32>() {
                 Ok(x) => Self::Coordinate(x),
-                Err(_) => {
-                    return Err(crate::VastParseError::new(format!(
-                        "x position parsing error: '{s}'",
-                    )));
-                }
+                Err(_) => Self::Right,
             },
         })
     }
@@ -151,15 +147,11 @@ impl std::str::FromStr for YPosition {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
-            "top" => Self::Top,
-            "bottom" => Self::Bottom,
+            "top" | "Top" => Self::Top,
+            "bottom" | "Bottom" => Self::Bottom,
             _ => match s.parse::<i32>() {
                 Ok(y) => Self::Coordinate(y),
-                Err(_) => {
-                    return Err(crate::VastParseError::new(format!(
-                        "y position parsing error: '{s}'",
-                    )));
-                }
+                Err(_) => Self::Bottom,
             },
         })
     }
