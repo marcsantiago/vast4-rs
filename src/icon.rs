@@ -114,8 +114,8 @@ impl std::str::FromStr for XPosition {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
-            "left" | "Left" => Self::Left,
-            "right" | "Right" => Self::Right,
+            "left" | "Left" | "LEFT" => Self::Left,
+            "right" | "Right" | "RIGHT" => Self::Right,
             _ => match s.parse::<i32>() {
                 Ok(x) => Self::Coordinate(x),
                 Err(_) => Self::Right,
@@ -147,8 +147,8 @@ impl std::str::FromStr for YPosition {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
-            "top" | "Top" => Self::Top,
-            "bottom" | "Bottom" => Self::Bottom,
+            "top" | "Top" | "TOP" => Self::Top,
+            "bottom" | "Bottom" | "BOTTOM" => Self::Bottom,
             _ => match s.parse::<i32>() {
                 Ok(y) => Self::Coordinate(y),
                 Err(_) => Self::Bottom,
